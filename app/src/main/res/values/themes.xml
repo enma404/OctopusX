@@ -1,0 +1,30 @@
+<resources>
+    <style name="Theme.OctopusX" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/octopusx_accent</item>
+        <item name="colorPrimaryDark">?attr/colorSurface</item>
+        <item name="colorPrimaryVariant">@color/octopusx_accent</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">@color/octopusx_accent</item>
+        <item name="colorSecondaryVariant">@color/octopusx_accent_contrast</item>
+        <item name="colorOnSecondary">@color/octopusx_accent_contrast</item>
+        <item name="android:navigationBarColor">@color/toolbar_color</item>
+        <item name="android:statusBarColor">@color/toolbar_color</item>
+        <item name="switchStyle">@style/Widget.OctopusX.Switch</item>
+        <item name="android:textViewStyle">@style/Widget.OctopusX.TextView</item>
+        <item name="android:buttonStyle">@style/Widget.OctopusX.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.OctopusX.CardView</item>
+        <item name="floatingActionButtonStyle">@style/Widget.OctopusX.FAB</item>
+        <item name="materialAlertDialogTheme">@style/Widget.OctopusX.AlertDialog</item>
+        <item name="backgroundColor">#fff</item>
+    </style>
+    <style name="Theme.OctopusXFloatingDialog" parent="Theme.OctopusX">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+</resources>
