@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="Permissions"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/intro_primary_text"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -92,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Root (superuser)"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -164,7 +164,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Storage"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -236,7 +236,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Battery whitelist"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -302,7 +302,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:text="A su prompt will appear — tap Grant. Storage may open in Settings if All-files-access is needed."
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColor="@color/intro_primary_text"
                     android:textSize="12sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="intro_primary_text">#FFFFFF</color>
     <color name="dialog_background_color">#2C2C2C</color>
     <color name="octopusx_accent_contrast">#FF6666</color>
     <color name="octopusx_accent">#E60000</color>

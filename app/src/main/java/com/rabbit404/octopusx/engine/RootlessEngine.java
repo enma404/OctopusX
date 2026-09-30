@@ -28,7 +28,7 @@ public final class RootlessEngine {
 
     private final Context app;
     private final ExecutorService qemuExecutor = Executors.newSingleThreadExecutor(r -> {
-        Thread t = new Thread(r, "octopusx-qemu");
+        Thread t = new Thread(r, "stryker-qemu");
         t.setDaemon(true);
         return t;
     });
@@ -169,7 +169,7 @@ public final class RootlessEngine {
             qemuProcess = proc;
             booted = false;
 
-            new Thread(() -> pumpBootLog(proc, listener), "octopusx-qemu-log").start();
+            new Thread(() -> pumpBootLog(proc, listener), "stryker-qemu-log").start();
 
             long deadline = System.currentTimeMillis() + BOOT_TIMEOUT_MS;
             boolean consoleTried = false;
@@ -195,7 +195,7 @@ public final class RootlessEngine {
                 sleep(1000);
             }
             return "Boot timed out after " + (BOOT_TIMEOUT_MS / 1000) + "s"
-                    + (consoleTried ? " — the guest booted but octopusx-agentd never came up" : "");
+                    + (consoleTried ? " — the guest booted but stryker-agentd never came up" : "");
         } catch (Exception e) {
             Log.e(TAG, "start failed", e);
             return e.getMessage() == null ? e.toString() : e.getMessage();
@@ -372,7 +372,7 @@ public final class RootlessEngine {
             if (isAlive(p)) p.destroy();
             sleep(1500);
             if (isAlive(p)) destroyForcibly(p);
-        }, "octopusx-qemu-stop").start();
+        }, "stryker-qemu-stop").start();
     }
 
     public boolean stopAndWait(long timeoutMs) {
@@ -512,7 +512,7 @@ public final class RootlessEngine {
         ensureWifiFirmware();
         try {
             GuestExec.run("mkdir -p /etc/modules-load.d; "
-                    + "{ echo loop; echo squashfs; echo overlay; } > /etc/modules-load.d/octopusx.conf 2>/dev/null; true");
+                    + "{ echo loop; echo squashfs; echo overlay; } > /etc/modules-load.d/stryker.conf 2>/dev/null; true");
             if (guestHasModules()) {
                 GuestExec.run("modprobe loop >/dev/null 2>&1; modprobe squashfs >/dev/null 2>&1; "
                         + "modprobe overlay >/dev/null 2>&1; true");
@@ -532,11 +532,11 @@ public final class RootlessEngine {
             }
             GuestExec.run("command -v cpio >/dev/null 2>&1 || "
                     + "(export DEBIAN_FRONTEND=noninteractive; apt-get install -y --no-install-recommends cpio >/dev/null 2>&1); "
-                    + "rm -rf /tmp/octopusx-ird; mkdir -p /tmp/octopusx-ird; cd /tmp/octopusx-ird; "
+                    + "rm -rf /tmp/stryker-ird; mkdir -p /tmp/stryker-ird; cd /tmp/stryker-ird; "
                     + "(cpio -idm < /sdcard/OctopusX/.initrd.img || busybox cpio -idm < /sdcard/OctopusX/.initrd.img) >/dev/null 2>&1; "
-                    + "if [ -d /tmp/octopusx-ird/lib/modules ]; then mkdir -p /lib/modules; "
-                    + "cp -a /tmp/octopusx-ird/lib/modules/. /lib/modules/; depmod -a >/dev/null 2>&1; "
-                    + "echo __MODULES_DEPLOYED__; fi; rm -rf /tmp/octopusx-ird");
+                    + "if [ -d /tmp/stryker-ird/lib/modules ]; then mkdir -p /lib/modules; "
+                    + "cp -a /tmp/stryker-ird/lib/modules/. /lib/modules/; depmod -a >/dev/null 2>&1; "
+                    + "echo __MODULES_DEPLOYED__; fi; rm -rf /tmp/stryker-ird");
             //noinspection ResultOfMethodCallIgnored
             staged.delete();
             ArrayList<String> res = GuestExec.run(
@@ -595,9 +595,9 @@ public final class RootlessEngine {
 
 
     private static final String CORE_MARKER = "/CORE/PixieWps/pixie.py";
-    private static final String CORE_ASSET = "rootless/octopusx-guest-core.tar";
+    private static final String CORE_ASSET = "rootless/stryker-guest-core.tar";
     /** Name the payload carries inside the 9p share, i.e. /sdcard/OctopusX/<this> in the guest. */
-    private static final String STAGED_CORE = ".octopusx-guest-core.tar";
+    private static final String STAGED_CORE = ".stryker-guest-core.tar";
 
     public synchronized boolean ensureGuestCore() {
         if (!isReady() && !startBlocking(null)) return false;
@@ -613,7 +613,7 @@ public final class RootlessEngine {
      * Shell that unpacks the staged payload and reports whether the AGENT specifically survived.
      *
      * The witness matters. Checking only {@link #CORE_MARKER} — a file from the /CORE part of the
-     * archive — lets a deploy that produced a zero-byte /usr/local/sbin/octopusx-agentd report
+     * archive — lets a deploy that produced a zero-byte /usr/local/sbin/stryker-agentd report
      * success. systemd then fails that unit with 203/EXEC forever, and because every repair path
      * runs through the agent, the VM never recovers: this is how an app update leaves a working
      * guest permanently stuck at "waiting for the guest agent". Test the file the guest actually
@@ -621,9 +621,9 @@ public final class RootlessEngine {
      */
     private static String unpackAndVerify(String tarPath) {
         return "tar xf " + tarPath + " -C / 2>&1; "
-                + "chmod 0755 /usr/local/sbin/octopusx-ptyd /usr/local/sbin/octopusx-agentd 2>/dev/null; "
-                + "echo __AGENT_BYTES__$(wc -c < /usr/local/sbin/octopusx-agentd 2>/dev/null || echo 0); "
-                + "if [ -s /usr/local/sbin/octopusx-agentd ] && [ -x /usr/local/sbin/octopusx-agentd ] "
+                + "chmod 0755 /usr/local/sbin/stryker-ptyd /usr/local/sbin/stryker-agentd 2>/dev/null; "
+                + "echo __AGENT_BYTES__$(wc -c < /usr/local/sbin/stryker-agentd 2>/dev/null || echo 0); "
+                + "if [ -s /usr/local/sbin/stryker-agentd ] && [ -x /usr/local/sbin/stryker-agentd ] "
                 + "&& [ -f " + CORE_MARKER + " ]; then echo __DEPLOYED__; else echo __FAIL__; fi";
     }
 
@@ -674,7 +674,7 @@ public final class RootlessEngine {
     /**
      * Brings the agent up over the serial console, for when it is not up to be talked to.
      *
-     * Everything the app does inside the guest goes through octopusx-agentd on port 1050 —
+     * Everything the app does inside the guest goes through stryker-agentd on port 1050 —
      * including deployGuestCore(), which installs the agent. That circularity means a guest
      * whose agent never started cannot be fixed through the normal path: the VM boots, the
      * console shows a root prompt, and the app waits for an agent that nothing is going to
@@ -709,9 +709,9 @@ public final class RootlessEngine {
         }
         cmd.append("command -v socat >/dev/null 2>&1 || (export DEBIAN_FRONTEND=noninteractive; ")
            .append("apt-get install -y --no-install-recommends socat >/dev/null 2>&1); ")
-           .append("(systemctl restart octopusx-agent.service >/dev/null 2>&1 ")
-           .append("|| (pkill -f octopusx-agentd >/dev/null 2>&1; ")
-           .append("setsid /usr/local/sbin/octopusx-agentd >/dev/null 2>&1 &)); ")
+           .append("(systemctl restart stryker-agent.service >/dev/null 2>&1 ")
+           .append("|| (pkill -f stryker-agentd >/dev/null 2>&1; ")
+           .append("setsid /usr/local/sbin/stryker-agentd >/dev/null 2>&1 &)); ")
            .append("sleep 3; ss -ltn 2>/dev/null | grep -q ':1050' && echo __AGENT_UP__ || echo __AGENT_DOWN__");
 
         boolean up = false;
@@ -729,7 +729,7 @@ public final class RootlessEngine {
         // Nothing to lose by naming what is missing: the same console can tell us.
         for (String l : GuestConsole.run(
                 "printf 'agentd_bytes=%s socat=%s\\n' "
-                + "\"$(wc -c < /usr/local/sbin/octopusx-agentd 2>/dev/null || echo missing)\" "
+                + "\"$(wc -c < /usr/local/sbin/stryker-agentd 2>/dev/null || echo missing)\" "
                 + "\"$(command -v socat >/dev/null 2>&1 && echo yes || echo NO)\"", sock, 20_000)) {
             if (l != null && l.startsWith("agentd_bytes=")) {
                 GuestExec.logToStore("console bootstrap failed — guest reports " + l.trim());
@@ -739,9 +739,9 @@ public final class RootlessEngine {
     }
 
     private void restartGuestAgent() {
-        GuestExec.run("(systemctl restart octopusx-agent.service >/dev/null 2>&1 "
-                + "|| (pkill -f octopusx-agentd >/dev/null 2>&1; "
-                + "setsid /usr/local/sbin/octopusx-agentd >/dev/null 2>&1 &)) &");
+        GuestExec.run("(systemctl restart stryker-agent.service >/dev/null 2>&1 "
+                + "|| (pkill -f stryker-agentd >/dev/null 2>&1; "
+                + "setsid /usr/local/sbin/stryker-agentd >/dev/null 2>&1 &)) &");
         for (int i = 0; i < 20; i++) {
             for (String l : GuestExec.run(
                     "ss -ltn 2>/dev/null | grep -q ':1052' && echo __UP__ || echo __NO__")) {
@@ -1012,7 +1012,7 @@ public final class RootlessEngine {
                 shareInUse = share;
                 shareActive = true;
                 a.add("-fsdev"); a.add("local,id=fsdev0,security_model=none,path=" + share.getAbsolutePath());
-                a.add("-device"); a.add("virtio-9p-pci,fsdev=fsdev0,mount_tag=octopusxshare");
+                a.add("-device"); a.add("virtio-9p-pci,fsdev=fsdev0,mount_tag=strykershare");
             } else {
                 Log.w(TAG, "9p share dir unavailable — booting without /sdcard share");
             }
@@ -1028,7 +1028,7 @@ public final class RootlessEngine {
         a.add("-device"); a.add("virtio-serial-pci");
         a.add("-chardev"); a.add("socket,id=term0,path=" + RootlessPaths.termSock(app).getAbsolutePath()
                 + ",server=on,wait=off");
-        a.add("-device"); a.add("virtconsole,chardev=term0,name=org.octopusx.term");
+        a.add("-device"); a.add("virtconsole,chardev=term0,name=org.stryker.term");
 
         a.add("-display"); a.add("none");
         a.add("-qmp"); a.add("unix:" + RootlessPaths.qmpSock(app).getAbsolutePath() + ",server,nowait");
@@ -1037,7 +1037,7 @@ public final class RootlessEngine {
 
     private static String kernelCmdline(boolean fastBoot) {
         StringBuilder sb = new StringBuilder("root=/dev/vda rw rootwait rootflags=noatime "
-                + "console=ttyAMA0 loglevel=4 net.ifnames=0 mitigations=off octopusx.rootless=1");
+                + "console=ttyAMA0 loglevel=4 net.ifnames=0 mitigations=off stryker.rootless=1");
         if (fastBoot) {
             sb.append(" init_on_alloc=0 init_on_free=0 audit=0 nokaslr")
               .append(" rcupdate.rcu_expedited=1 rcupdate.rcu_normal_after_boot=1")
@@ -1062,14 +1062,14 @@ public final class RootlessEngine {
 
     private File pickShareDir() {
         if (hasStorageAccess()) {
-            File pub = new File(android.os.Environment.getExternalStorageDirectory(), "OctopusX");
+            File pub = new File(android.os.Environment.getExternalStorageDirectory(), "Stryker");
             if ((pub.isDirectory() || pub.mkdirs()) && pub.canWrite()) {
                 return withSubdirs(pub);
             }
         }
         File ext = app.getExternalFilesDir(null);
         if (ext != null) {
-            File s = new File(ext, "OctopusX");
+            File s = new File(ext, "Stryker");
             if (s.isDirectory() || s.mkdirs()) return withSubdirs(s);
         }
         return null;

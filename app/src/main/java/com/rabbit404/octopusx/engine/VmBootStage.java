@@ -27,7 +27,7 @@ public final class VmBootStage {
             String raw = lines.get(i);
             if (raw == null) continue;
             String l = raw.toLowerCase(Locale.ROOT);
-            if (l.contains("root@") || l.contains("octopusx-agentd") || l.contains("login:")) return AGENT;
+            if (l.contains("root@") || l.contains("stryker-agentd") || l.contains("login:")) return AGENT;
             if (best < SERVICES && (l.contains("systemd") || l.contains("openrc")
                     || l.contains("starting ") || l.contains("udhcpc") || l.contains("dhcp"))) {
                 best = SERVICES;

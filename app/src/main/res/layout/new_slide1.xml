@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="Welcome to OctopusX"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/intro_primary_text"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -97,7 +97,7 @@
                             android:breakStrategy="balanced"
                             android:gravity="center"
                             android:text="WiFi audit"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -130,7 +130,7 @@
                             android:breakStrategy="balanced"
                             android:gravity="center"
                             android:text="Local net"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -163,7 +163,7 @@
                             android:breakStrategy="balanced"
                             android:gravity="center"
                             android:text="Bluetooth"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -196,7 +196,7 @@
                             android:breakStrategy="balanced"
                             android:gravity="center"
                             android:text="Nuclei"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -260,7 +260,7 @@
                         android:layout_marginStart="14dp"
                         android:layout_weight="1"
                         android:text="I understand this tool is for authorized testing only"
-                        android:textColor="?android:attr/textColorPrimary"
+                        android:textColor="@color/intro_primary_text"
                         android:textSize="14sp" />
 
                     <com.google.android.material.checkbox.MaterialCheckBox
@@ -308,7 +308,7 @@
                         android:layout_marginStart="14dp"
                         android:layout_weight="1"
                         android:text="I accept full responsibility for my actions"
-                        android:textColor="?android:attr/textColorPrimary"
+                        android:textColor="@color/intro_primary_text"
                         android:textSize="14sp" />
 
                     <com.google.android.material.checkbox.MaterialCheckBox
@@ -356,7 +356,7 @@
                         android:layout_marginStart="14dp"
                         android:layout_weight="1"
                         android:text="I will only test networks I own or have permission to test"
-                        android:textColor="?android:attr/textColorPrimary"
+                        android:textColor="@color/intro_primary_text"
                         android:textSize="14sp" />
 
                     <com.google.android.material.checkbox.MaterialCheckBox

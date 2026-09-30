@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="Device check"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/intro_primary_text"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -116,7 +116,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Root access"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -183,7 +183,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Wlan0 monitor mode"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -250,7 +250,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="USB OTG support"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -317,7 +317,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Manufacturer"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -384,7 +384,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Free space"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/intro_primary_text"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 

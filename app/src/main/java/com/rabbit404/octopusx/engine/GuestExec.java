@@ -33,8 +33,8 @@ public final class GuestExec {
     }
 
     private static String wrapJob(String command, String jobId) {
-        String script = JOB_DIR + "/octopusx-" + jobId + ".sh";
-        String pidFile = JOB_DIR + "/octopusx-" + jobId + ".pid";
+        String script = JOB_DIR + "/stryker-" + jobId + ".sh";
+        String pidFile = JOB_DIR + "/stryker-" + jobId + ".pid";
         return "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin${PATH:+:$PATH}; "
                 + "export HOME=/root LANG=C.UTF-8; "
                 + "cat > " + script + " <<'" + JOB_EOF + "'\n"
@@ -43,19 +43,19 @@ public final class GuestExec {
                 + JOB_EOF + "\n"
                 + "if command -v setsid >/dev/null 2>&1; then setsid sh " + script + " & "
                 + "else sh " + script + " & fi\n"
-                + "__octopusx_job=$!\n"
-                + "wait $__octopusx_job\n"
+                + "__stryker_job=$!\n"
+                + "wait $__stryker_job\n"
                 + "printf '\\n" + EXIT_SENTINEL + "%s\\n' \"$?\"\n"
                 + "rm -f " + script + " " + pidFile + "\n";
     }
 
     private static void killJob(String jobId) {
-        final String pidFile = JOB_DIR + "/octopusx-" + jobId + ".pid";
+        final String pidFile = JOB_DIR + "/stryker-" + jobId + ".pid";
         final String cmd =
                 "if [ -f " + pidFile + " ]; then __g=$(cat " + pidFile + " 2>/dev/null); "
                         + "if [ -n \"$__g\" ]; then kill -TERM -$__g 2>/dev/null || kill -TERM $__g 2>/dev/null; "
                         + "sleep 1; kill -KILL -$__g 2>/dev/null || kill -KILL $__g 2>/dev/null; fi; fi; "
-                        + "rm -f " + JOB_DIR + "/octopusx-" + jobId + ".sh " + pidFile;
+                        + "rm -f " + JOB_DIR + "/stryker-" + jobId + ".sh " + pidFile;
         new Thread(() -> run(cmd), "guest-killjob").start();
     }
 

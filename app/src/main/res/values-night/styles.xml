@@ -11,6 +11,7 @@
 
     <style name="Widget.OctopusX.TextView" parent="android:TextAppearance.Material.Widget.TextView">
         <item name="android:fontFamily">@font/lato</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="Widget.OctopusX.CustomBottomSheetStyle" parent="Widget.Material3.BottomSheet.Modal">

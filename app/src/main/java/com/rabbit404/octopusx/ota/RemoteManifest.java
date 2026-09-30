@@ -90,6 +90,7 @@ public final class RemoteManifest {
     public String coreVersion = "";
     public Asset chroot64;
     public RootlessAssets rootless;
+    public RootlessAssets rootlessV2;
     public AppUpdate app;
     public final List<News> news = new ArrayList<>();
     public final List<NotificationItem> notifications = new ArrayList<>();
@@ -126,6 +127,16 @@ public final class RemoteManifest {
                     asset(rootless.optJSONObject("initrd")),
                     asset(rootless.optJSONObject("libslirp")),
                     asset(rootless.optJSONObject("rootfs")));
+        }
+
+        JSONObject rootlessV2 = root.optJSONObject("rootless_v2");
+        if (rootlessV2 != null) {
+            manifest.rootlessV2 = new RootlessAssets(
+                    asset(rootlessV2.optJSONObject("qemu")),
+                    asset(rootlessV2.optJSONObject("kernel")),
+                    asset(rootlessV2.optJSONObject("initrd")),
+                    asset(rootlessV2.optJSONObject("libslirp")),
+                    asset(rootlessV2.optJSONObject("rootfs")));
         }
 
         JSONObject app = root.optJSONObject("app");

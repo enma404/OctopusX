@@ -16,7 +16,7 @@ import com.rabbit404.octopusx.R;
 
 public class RootlessService extends Service {
 
-    private static final String CHANNEL_ID = "octopusx_rootless";
+    private static final String CHANNEL_ID = "stryker.rootless";
     private static final int NOTIF_ID = 71;
 
     public static void start(Context context) {
@@ -66,7 +66,7 @@ public class RootlessService extends Service {
         final RootlessEngine engine = RootlessEngine.get(getApplicationContext());
         new Thread(() -> {
             try { engine.stop(); } catch (Throwable ignored) {}
-        }, "octopusx-vm-service-stop").start();
+        }, "stryker-vm-service-stop").start();
         super.onDestroy();
     }
 
@@ -87,7 +87,7 @@ public class RootlessService extends Service {
 
     private Notification buildNotification(String text) {
         return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("OctopusX rootless engine")
+                .setContentTitle("Stryker rootless engine")
                 .setContentText(text)
                 .setSmallIcon(R.drawable.bolt)
                 .setOngoing(true)

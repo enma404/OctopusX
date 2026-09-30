@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Runs commands on the guest's serial console.
  *
  * This is the second way into the VM, and it exists because the first one cannot bootstrap
- * itself. {@link GuestExec} only speaks to octopusx-agentd on port 1050, and the agent is
+ * itself. {@link GuestExec} only speaks to stryker-agentd on port 1050, and the agent is
  * delivered by {@link RootlessEngine#deployGuestCore()} over that same port — which makes it an
  * update path, never an install path. A rootfs whose agent is missing, whose socat is missing,
  * or whose unit failed to start can therefore never be repaired: the VM boots fine and then sits
